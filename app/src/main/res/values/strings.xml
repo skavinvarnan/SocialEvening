@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SocialEvening</string>
+    <string name="splash_intro_text">Some intro text</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="facebook_app_id">957458147610836</string>
 </resources>

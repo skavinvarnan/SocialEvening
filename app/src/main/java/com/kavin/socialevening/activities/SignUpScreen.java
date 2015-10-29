@@ -24,9 +24,6 @@ public class SignUpScreen extends BaseActivity {
         setContentView(R.layout.activity_sign_up_screen);
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
-        }
     }
 
     @OnClick(R.id.sign_up_button)
@@ -40,7 +37,7 @@ public class SignUpScreen extends BaseActivity {
                 } else if (user.isNew()) {
                     Log.d("MyApp", "User signed up and logged in through Facebook!");
                 } else {
-
+                    Log.d("MyApp", "Already signed in");
                 }
             }
         });
@@ -50,5 +47,12 @@ public class SignUpScreen extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        startActivity(new Intent(this, SplashScreen.class));
     }
 }

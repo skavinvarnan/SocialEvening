@@ -8,27 +8,25 @@ import com.kavin.socialevening.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SplashScreen extends BaseActivity {
+public class SignInScreen extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+        setContentView(R.layout.activity_sign_in_screen);
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
     }
 
-    @OnClick(R.id.sign_up)
-    protected void signUp() {
-        startActivity(new Intent(this, SignUpScreen.class));
-        finish();
+    @OnClick(R.id.sign_in_button)
+    protected void signInClicked() {
+        startActivity(new Intent(this, WelcomeScreen.class));
     }
 
-    @OnClick(R.id.sign_in)
-    protected void signIn() {
-        startActivity(new Intent(this, SignInScreen.class));
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
         finish();
+        startActivity(new Intent(this, SplashScreen.class));
     }
-
-
 }

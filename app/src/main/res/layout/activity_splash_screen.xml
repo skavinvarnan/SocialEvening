@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:text="@string/splash_intro_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="70dp"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:layout_height="wrap_content" />
@@ -33,6 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:textSize="16sp"
+            android:id="@+id/sign_in"
             android:textColor="#022d93"
             android:text="@string/sign_in"
             android:layout_marginLeft="8dp"

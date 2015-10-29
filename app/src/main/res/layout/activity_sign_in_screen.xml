@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_primary"
-    tools:context="com.kavin.socialevening.activities.SignUpScreen">
+    tools:context="com.kavin.socialevening.activities.SignInScreen">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:text="Sign Up"
-        android:id="@+id/sign_up"
+        android:text="Sign In"
+        android:id="@+id/sign_in"
         android:textColor="@color/white"
         android:textSize="22sp"
         android:layout_height="wrap_content" />
@@ -22,7 +22,7 @@
         android:padding="6dp"
         android:id="@+id/email"
         android:textSize="16sp"
-        android:layout_below="@id/sign_up"
+        android:layout_below="@id/sign_in"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:layout_height="wrap_content" />
@@ -41,8 +41,8 @@
 
     <Button
         android:layout_width="200dp"
-        android:text="Sign Up"
-        android:id="@+id/sign_up_button"
+        android:text="Log in"
+        android:id="@+id/sign_in_button"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_below="@id/password"
@@ -54,7 +54,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_below="@id/sign_up_button"
+        android:layout_below="@id/sign_in_button"
         android:id="@+id/divider"
         android:layout_marginTop="30dp"
         android:layout_height="wrap_content">

@@ -1,31 +1,47 @@
 package com.kavin.socialevening.activities;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.kavin.socialevening.R;
 import com.kavin.socialevening.helper.BitmapHelper;
+import com.kavin.socialevening.helper.GpsHelper;
+import com.kavin.socialevening.interfaces.GpsLocationListener;
 import com.kavin.socialevening.views.RoundedImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CreateTeamScreen extends BaseActivity {
+public class CreateTeamScreen extends BaseActivity implements GpsLocationListener {
 
     @Bind(R.id.image)
     protected RoundedImageView mProfileImage;
 
+    @Bind(R.id.address)
+    protected TextView mAddress;
+
+    @Bind(R.id.list)
+    protected ListView mList;
+
     private BitmapHelper mBitmapHelper;
 
-    final private int CAPTURE_IMAGE = 2;
+    private static final int CAPTURE_IMAGE = 1001;
+    private static final int PICK_CONTACT = 1002;
+
+    public static final String EMAIL = "email";
+    public static final String NAME = "name";
+
+    private GpsHelper mGpsHelper;
+
+    private double mObtainedLatitude;
+    private double mObtainedLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,61 +50,24 @@ public class CreateTeamScreen extends BaseActivity {
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
         mBitmapHelper = new BitmapHelper(this);
+        mGpsHelper = new GpsHelper(this);
+        mGpsHelper.setGpsLocationListener(this);
+        mGpsHelper.checkIfGpsOnAndRequestLocationInfo();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Create Team");
+        }
+    }
+
+    @OnClick(R.id.add_person)
+    protected void addPerson() {
+        startActivityForResult(new Intent(this, PickContactScreen.class), PICK_CONTACT);
     }
 
     @OnClick(R.id.image)
     protected void uploadSelfie() {
-        //dispatchTakePictureIntent();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        final NotificationCompat.Builder notif = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle("title")
-                .setContentText("text")
-                        //      .setTicker(getString(R.string.tick)) removed, seems to not show at all
-                        //      .setWhen(System.currentTimeMillis()) removed, match default
-                        //      .setContentIntent(contentIntent) removed, I don't neet it
-                .setColor(getResources().getColor(R.color.color_primary)) //ok
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setSmallIcon(R.drawable.facebook_login_blue) //ok
-
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.team_avatar))
-                        //      .setCategory(Notification.CATEGORY_CALL) does not seem to make a difference
-                .setPriority(Notification.DEFAULT_VIBRATE); //does not seem to make a difference
-        //      .setVisibility(Notification.VISIBILITY_PRIVATE); //does not seem to make a difference
-
-
-        //Yes intent
-        Intent yesReceive = new Intent();
-        yesReceive.setAction("yes");
-        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-        notif.addAction(R.drawable.ic_done_black, "Yes", pendingIntentYes);
-
-//Maybe intent
-        Intent maybeReceive = new Intent();
-        maybeReceive.setAction("maybe");
-        PendingIntent pendingIntentMaybe = PendingIntent.getBroadcast(this, 12345, maybeReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-        notif.addAction(R.drawable.ic_clear_black, "Partly", pendingIntentMaybe);
-
-
-
-
-        notificationManager.notify(123, notif.build());
+        dispatchTakePictureIntent();
     }
-
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//        String action = intent.getAction();
-//
-//        if("yes".equals(action)) {
-//            Log.v("shuffTest", "Pressed YES");
-//        } else if("maybe".equals(action)) {
-//            Log.v("shuffTest","Pressed NO");
-//        } else if("no_action".equals(action)) {
-//            Log.v("shuffTest","Pressed MAYBE");
-//        }
-//    }
-
-
-
 
     private void dispatchTakePictureIntent() {
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -102,11 +81,33 @@ public class CreateTeamScreen extends BaseActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAPTURE_IMAGE) {
                 mProfileImage.setImageBitmap(mBitmapHelper.rotateImage(mBitmapHelper.getImagePath()));
+            } else if (requestCode == PICK_CONTACT) {
+                if (data != null && data.getExtras() != null && data.getExtras().getString(EMAIL) != null) {
+                    String email = data.getExtras().getString(EMAIL);
+                    String name = data.getExtras().getString(NAME);
+                    Log.d("kacin", email);
+                }
             }
         }
 
     }
 
 
+    @Override
+    public void onGpsLocationObtainedListener(String location, double latitude, double longitude) {
+        mObtainedLatitude = latitude;
+        mObtainedLongitude = longitude;
+        mAddress.setText("@ " + location);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

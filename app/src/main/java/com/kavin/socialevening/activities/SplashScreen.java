@@ -17,7 +17,6 @@ public class SplashScreen extends BaseActivity {
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
         startActivity(new Intent(this, CreateTeamScreen.class));
-
     }
 
     @OnClick(R.id.sign_up)

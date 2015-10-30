@@ -14,22 +14,90 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Team Name"
-        android:textSize="20sp"
-        android:textColor="@color/black"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="12dp"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="italic"
+        android:id="@+id/address"
         android:layout_toRightOf="@id/image"
-        android:id="@+id/team_name_text"
-        android:layout_margin="8dp"
+        android:textColor="@color/black"
+        android:text="Fetching location"
         android:layout_height="wrap_content" />
 
     <EditText
         android:layout_width="match_parent"
         android:inputType="textCapWords"
-        android:layout_below="@id/team_name_text"
+        android:layout_below="@id/address"
         android:layout_toRightOf="@id/image"
         android:hint="enter team name"
         android:textColor="@color/black"
         android:layout_margin="8dp"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:layout_below="@id/image"
+        android:id="@+id/helper"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:text="↑↑↑ Tap the above avatar to change image"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/helper"
+        android:layout_marginTop="16dp"
+        android:id="@+id/divider"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:background="#666666"
+        android:layout_height="1dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/divider"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/divider2"
+        android:layout_marginLeft="8dp"
+        android:background="#666666"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_below="@id/divider2"
+        android:text="My Team"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:id="@+id/my_team"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/my_team"
+        android:id="@+id/add_person"
+        android:layout_alignBottom="@id/my_team"
+        android:src="@drawable/ic_add_friend"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/my_team"
+        android:layout_marginTop="8dp"
+        android:layout_height="match_parent">
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/list"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

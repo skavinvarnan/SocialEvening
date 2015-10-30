@@ -48,4 +48,11 @@ public final class Constants {
     public final class SP {
         public static final String TEMP_SELFIE_LOCATION = "tempSelfieLocation";
     }
+
+    public final class Location {
+        public static final String LAST_FETCHED_TIME = "lastFetchedTime";
+        public static final String LAST_FETCHED_NAME = "lastFetchedName";
+        public static final String LAST_FETCHED_LAT = "lastFetchedLat";
+        public static final String LAST_FETCHED_LONG = "lastFetchedLong";
+    }
 }

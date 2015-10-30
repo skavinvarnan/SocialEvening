@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kavin.socialevening.activities.PickContactScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#c5c5c5"
+            android:id="@+id/layout"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Type an email below to invite a friend to your team"
+                android:textColor="@android:color/black" />
+
+            <RelativeLayout
+                android:id="@+id/top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+                <EditText
+                    android:id="@+id/email_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="textEmailAddress"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/black"
+                    android:background="@drawable/oval_enter_contact"
+                    android:hint="Enter Email Address"
+                    android:paddingLeft="20sp"
+                    android:singleLine="true" />
+
+                <ImageButton
+                    android:id="@+id/add"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/email_id"
+                    android:layout_alignRight="@id/email_id"
+                    android:layout_alignTop="@id/email_id"
+                    android:layout_marginRight="20sp"
+                    android:src="@drawable/ic_add_friend"
+                    android:textAllCaps="false"
+                    android:textColor="#3d3d3d" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:text="or"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/contact_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingLeft="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Contact List"
+            android:textColor="@android:color/black"
+            android:textSize="19sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:background="#bdbdbd" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+</RelativeLayout>

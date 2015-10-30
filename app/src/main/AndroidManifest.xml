@@ -67,6 +67,7 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activities.CreateTeamScreen"
+            android:theme="@style/TextToolbar"
             android:screenOrientation="portrait" />
 
         <service android:name="com.parse.PushService" />

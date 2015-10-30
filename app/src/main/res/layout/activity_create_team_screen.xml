@@ -33,6 +33,7 @@
         android:layout_toRightOf="@id/image"
         android:hint="enter team name"
         android:textColor="@color/black"
+        android:id="@+id/team_name"
         android:layout_margin="8dp"
         android:layout_height="wrap_content" />
 
@@ -44,7 +45,7 @@
         android:layout_marginTop="6dp"
         android:textColor="@color/black"
         android:layout_marginLeft="10dp"
-        android:text="↑↑↑ Tap the above avatar to change image"
+        android:text="↑↑↑ Tap the above avatar to take selfie"
         android:layout_height="wrap_content" />
 
     <View
@@ -96,6 +97,15 @@
             android:layout_width="match_parent"
             android:id="@+id/list"
             android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/no_users"
+            android:text="No Friends. Add friends by clicking the add user button."
+            android:padding="20sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

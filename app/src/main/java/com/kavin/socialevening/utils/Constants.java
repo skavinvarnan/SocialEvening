@@ -44,4 +44,8 @@ public final class Constants {
             public static final String NAME = "name";
         }
     }
+
+    public final class SP {
+        public static final String TEMP_SELFIE_LOCATION = "tempSelfieLocation";
+    }
 }

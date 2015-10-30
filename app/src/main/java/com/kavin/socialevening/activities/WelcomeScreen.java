@@ -1,5 +1,6 @@
 package com.kavin.socialevening.activities;
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
@@ -7,6 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -24,9 +29,15 @@ import com.kavin.socialevening.server.controller.RetrofitSingleton;
 import com.kavin.socialevening.server.dto.Address;
 import com.kavin.socialevening.server.dto.MapLocationResponse;
 import com.kavin.socialevening.server.service.MapService;
+import com.kavin.socialevening.utils.Constants;
+import com.parse.Parse;
+import com.parse.ParseUser;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -56,7 +67,18 @@ public class WelcomeScreen extends BaseActivity implements GoogleApiClient.Conne
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
         mMapService = RetrofitSingleton.getRestAdapter(RetrofitSingleton.UrlType.OPEN_STREET_MAPS).create(MapService.class);
         checkIfGpsOnAndRequestLocationInfo();
+        if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
+            mName.setText(ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME).toString());
+        } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null) {
+            mName.setText(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME).toString());
+        }
 
+
+    }
+
+    @OnClick(R.id.create_a_team)
+    protected void createATeam() {
+        startActivity(new Intent(this, CreateTeamScreen.class));
     }
 
     private void checkIfGpsOnAndRequestLocationInfo() {
@@ -118,7 +140,6 @@ public class WelcomeScreen extends BaseActivity implements GoogleApiClient.Conne
                 new Callback<MapLocationResponse>() {
                     @Override
                     public void success(MapLocationResponse mapLocationResponse, Response response) {
-                        Log.d("asdf", "asdf");
                         receivedMapLocation(mapLocationResponse);
                     }
 
@@ -127,7 +148,6 @@ public class WelcomeScreen extends BaseActivity implements GoogleApiClient.Conne
                         mAddress.setText("Unable to fetch location");
                     }
                 });
-        Log.d("asdf", location.getLatitude() + " " + location.getLongitude());
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
     }

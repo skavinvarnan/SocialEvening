@@ -36,4 +36,12 @@ public final class Constants {
         public final static boolean PRINT_LOG = true;
         public final static boolean PRINT_SERVER_CALL_LOGS = true;
     }
+
+    public final class Parse {
+        public final class User {
+            public static final String FB_ID = "fbId";
+            public static final String FB_NAME = "fbName";
+            public static final String NAME = "name";
+        }
+    }
 }

@@ -1,12 +1,65 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_primary"
     tools:context="com.kavin.socialevening.activities.WelcomeScreen">
 
     <TextView
         android:layout_width="wrap_content"
-        android:id="@+id/text"
-        android:text="test"
+        android:text="Welcome"
+        android:id="@+id/welcome"
+        android:textSize="32sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-light"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/welcome"
+        android:text="Kavin Varnan"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:textColor="@color/white"
+        android:id="@+id/name"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="to"
+        android:layout_below="@id/name"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="8dp"
+        android:id="@+id/to"
+        android:fontFamily="sans-serif-light"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_below="@id/to"
+        android:text="Social Evening"
+        android:layout_centerHorizontal="true"
+        android:textSize="36sp"
+        android:textColor="@color/white"
+        android:id="@+id/social_evening"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/social_evening"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="italic"
+        android:id="@+id/address"
+        android:textColor="@color/white"
+        android:text="Fetching location"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

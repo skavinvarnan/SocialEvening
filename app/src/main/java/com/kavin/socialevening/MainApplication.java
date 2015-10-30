@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 
 /**
  * Copyright 2015 (C) Virtual Applets
@@ -33,6 +34,7 @@ public class MainApplication extends Application {
         // Init parse library
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "jwgveVvg5Cy4L4pzR2pP5ZdnFk1j4prMfzIqooFu", "Z8RyMOrbTnKKlzNY3tcGJU5mVtltIESOJ07ACh2o");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         ParseFacebookUtils.initialize(this);
     }
 }

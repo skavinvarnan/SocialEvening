@@ -30,13 +30,12 @@ public class PushNotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if("yes".equals(intent.getAction())) {
-            Log.v("shuffTest","Pressed YES");
+            Log.v("shuffTest", "Pressed YES");
             return;
         } else if("maybe".equals(intent.getAction())) {
             Log.v("shuffTest","Pressed NO");
             return;
         }
-
 
         System.out.println("Opened the broadcast reciver");
         try {
@@ -70,13 +69,13 @@ public class PushNotificationReceiver extends BroadcastReceiver {
 
 
             //Yes intent
-            Intent yesReceive = new Intent();
+            Intent yesReceive = new Intent(context, ActionBroadcast.class);
             yesReceive.setAction("yes");
             PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
             notif.addAction(R.drawable.ic_done_black, "Yes", pendingIntentYes);
 
 //Maybe intent
-            Intent maybeReceive = new Intent();
+            Intent maybeReceive = new Intent(context, ActionBroadcast.class);
             maybeReceive.setAction("maybe");
             PendingIntent pendingIntentMaybe = PendingIntent.getBroadcast(context, 12345, maybeReceive, PendingIntent.FLAG_UPDATE_CURRENT);
             notif.addAction(R.drawable.ic_clear_black, "Partly", pendingIntentMaybe);

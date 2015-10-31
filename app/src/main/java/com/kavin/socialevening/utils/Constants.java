@@ -73,4 +73,8 @@ public final class Constants {
     }
 
 
+    public final class Intent {
+
+        public static final String OBJECT_ID = "objectId";
+    }
 }

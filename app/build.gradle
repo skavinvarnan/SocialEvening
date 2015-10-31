@@ -40,6 +40,7 @@ dependencies {
     compile 'com.parse:parse-android:1.10.3'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:design:22.2.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.splunk.mint:mint:4.3.0'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

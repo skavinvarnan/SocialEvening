@@ -96,7 +96,10 @@
             android:name=".activities.PickContactScreen"
             android:screenOrientation="portrait"
             android:theme="@style/TextToolbar" />
-        <activity android:name=".activities.HomeScreen" >
+        <activity
+            android:name=".activities.HomeScreen"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.TeamInfoActivity" >
         </activity>
     </application>
 

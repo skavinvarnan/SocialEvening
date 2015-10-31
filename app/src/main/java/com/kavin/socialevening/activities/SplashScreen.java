@@ -23,15 +23,6 @@ public class SplashScreen extends BaseActivity {
         setContentView(R.layout.activity_splash_screen);
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
-
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("email", ParseUser.getCurrentUser().getEmail());
-        ParseCloud.callFunctionInBackground("myTeams", map, new FunctionCallback<Object>() {
-            @Override
-            public void done(Object object, ParseException e) {
-                Log.d("asdf", object + "");
-            }
-        });
     }
 
     @OnClick(R.id.sign_up)

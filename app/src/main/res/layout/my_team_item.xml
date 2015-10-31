@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="12dp"
+        android:layout_height="wrap_content">
+        <com.kavin.socialevening.views.RoundedImageView
+            android:layout_width="96dp"
+            android:id="@+id/image"
+            android:src="@drawable/team_avatar"
+            android:layout_height="96dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Team Name"
+            android:layout_toRightOf="@id/image"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:id="@+id/team_name"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/team_name"
+            android:id="@+id/created_at"
+            android:text="Created @ Iblur, Banglore, Karnataka, India"
+            android:layout_toRightOf="@id/image"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="sans-serif-light"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/created_at"
+            android:id="@+id/status"
+            android:layout_toRightOf="@id/image"
+            android:text="Invited by Kavin Varnan"
+            android:textColor="@color/black"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="6dp"
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>

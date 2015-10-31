@@ -5,4 +5,7 @@
     <color name="color_accent">#40B3EB</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="divider_grey">#666666</color>
+    <color name="reject_red">#FC3D39</color>
+    <color name="accept_green">#53D769</color>
 </resources>

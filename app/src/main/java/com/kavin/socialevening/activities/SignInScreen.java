@@ -140,6 +140,8 @@ public class SignInScreen extends BaseActivity {
                             saveMoreInfoToParse(id, name, email);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            mProgressDialog.dismiss();
+                            showQuickDialog("Error", "Facebook login failed. Please make sure that email is checked while signing up", false);
                         }
                     }
                 });

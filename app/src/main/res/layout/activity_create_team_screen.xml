@@ -55,7 +55,7 @@
         android:id="@+id/divider"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="8dp"
-        android:background="#666666"
+        android:background="@color/divider_grey"
         android:layout_height="1dp"/>
     <View
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         android:layout_marginRight="16dp"
         android:id="@+id/divider2"
         android:layout_marginLeft="8dp"
-        android:background="#666666"
+        android:background="@color/divider_grey"
         android:layout_height="1dp"/>
 
     <TextView

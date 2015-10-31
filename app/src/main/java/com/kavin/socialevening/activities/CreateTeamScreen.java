@@ -83,6 +83,8 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
     private String mObtainedLocation;
     private ProgressDialog mProgressDialog;
 
+    private boolean mGoToHome = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,9 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
         mProgressDialog.setCancelable(false);
         setContentView(R.layout.activity_create_team_screen);
         ButterKnife.bind(this);
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            mGoToHome = getIntent().getExtras().getBoolean(Constants.Intent.GO_TO_HOME);
+        }
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setColors(R.color.color_primary, R.color.color_primary_dark, R.color.color_primary);
         mBitmapHelper = new BitmapHelper(this);
@@ -272,6 +277,13 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    if (mGoToHome) {
+                        finish();
+                        startActivity(new Intent(CreateTeamScreen.this, HomeScreen.class));
+                    } else {
+                        finish();
+                    }
+
                     mProgressDialog.dismiss();
                 } else {
                     mProgressDialog.dismiss();
@@ -379,7 +391,11 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
 
     @Override
     public void onBackPressed() {
-        finish();
-        startActivity(new Intent(this, HomeScreen.class));
+        if (mGoToHome) {
+            finish();
+            startActivity(new Intent(this, HomeScreen.class));
+        } else {
+            finish();
+        }
     }
 }

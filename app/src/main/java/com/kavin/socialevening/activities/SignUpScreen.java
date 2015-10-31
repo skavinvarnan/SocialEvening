@@ -186,7 +186,7 @@ public class SignUpScreen extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        startActivity(new Intent(this, SplashScreen.class));
+        startActivity(new Intent(this, IntroScreen.class));
     }
 
     private void proceedToNextScreen() {

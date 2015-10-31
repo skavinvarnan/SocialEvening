@@ -84,7 +84,7 @@ public class WelcomeScreen extends BaseActivity implements GpsLocationListener {
     @OnClick(R.id.create_a_team)
     protected void createATeam() {
         finish();
-        startActivity(new Intent(this, CreateTeamScreen.class));
+        startActivity(new Intent(this, CreateTeamScreen.class).putExtra(Constants.Intent.GO_TO_HOME, true));
     }
 
 

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.kavin.socialevening.R;
 import com.kavin.socialevening.adapter.HomeFragmentAdapter;
 import com.kavin.socialevening.fragment.MyTeamsFragment;
+import com.parse.ParseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,6 +53,11 @@ public class HomeScreen extends BaseActivity {
             case 1001:
                 startActivity(new Intent(this, RewardActivity.class));
                 return true;
+            case 1002:
+                ParseUser.logOut();
+                finish();
+                startActivity(new Intent(this, IntroScreen.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -60,6 +66,7 @@ public class HomeScreen extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(Menu.NONE, 1001, Menu.NONE, "Rewards").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, 1002, Menu.NONE, "Logout").setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         return true;
     }
 }

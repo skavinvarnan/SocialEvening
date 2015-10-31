@@ -63,7 +63,6 @@ public class GpsHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApi
         }
 
         if ((System.currentTimeMillis() - lastFetchedLocation) > 1000 * 60 * 5) {
-            Toast.makeText(mActivity, "fetching new location", Toast.LENGTH_SHORT).show();
             mGoogleApiClient = new GoogleApiClient.Builder(mActivity.getBaseContext())
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
@@ -99,7 +98,6 @@ public class GpsHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApi
                 }
             });
         } else {
-            Toast.makeText(mActivity, "fetching location from cache", Toast.LENGTH_SHORT).show();
             fetchLocationFromCache();
         }
     }

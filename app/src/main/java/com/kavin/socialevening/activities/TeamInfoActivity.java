@@ -159,6 +159,7 @@ public class TeamInfoActivity extends BaseActivity {
                     mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Awesome. You are joined " + mTeamObject.getString(Constants.Parse.Team.NAME)
                             , Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     mProgressDialog.dismiss();
                 }
@@ -179,6 +180,7 @@ public class TeamInfoActivity extends BaseActivity {
                     mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "You have rejected the request."
                             , Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     mProgressDialog.dismiss();
                 }

@@ -84,5 +84,6 @@ public final class Constants {
     public final class Intent {
 
         public static final String OBJECT_ID = "objectId";
+        public static final String GO_TO_HOME = "goToHome";
     }
 }

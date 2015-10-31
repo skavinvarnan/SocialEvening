@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -28,17 +26,26 @@ import com.kavin.socialevening.R;
 import com.kavin.socialevening.helper.BitmapHelper;
 import com.kavin.socialevening.helper.GpsHelper;
 import com.kavin.socialevening.interfaces.GpsLocationListener;
+import com.kavin.socialevening.server.dto.FriendsParseCloud;
+import com.kavin.socialevening.server.dto.PushDto;
 import com.kavin.socialevening.utils.Constants;
+import com.kavin.socialevening.utils.JsonUtils;
 import com.kavin.socialevening.views.RoundedImageView;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -255,7 +262,7 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
 
     private void saveTeam(ParseFile parseFile) {
         mProgressDialog.setMessage("Image uploaded. Saving team");
-        List<String> strings = new ArrayList<String>();
+        final List<String> strings = new ArrayList<String>();
         for (Friend friend: mFriendList) {
             strings.add(friend.email);
         }
@@ -277,6 +284,26 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+
+                    strings.remove(ParseUser.getCurrentUser().getEmail());
+
+                    ParseQuery pushQuery = ParseInstallation.getQuery();
+                    pushQuery.whereContainedIn(Constants.Parse.User.EMAIL, strings);
+
+                    ParsePush push = new ParsePush();
+                    push.setQuery(pushQuery);
+                    PushDto pushDto = new PushDto();
+                    pushDto.setPushType(Constants.PushType.FRIEND_INVITED_TO_TEAM);
+                    if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
+                        pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) + " invited you to join " + mTeamName.getText().toString().trim());
+                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null){
+                        pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) + " invited you to join " + mTeamName.getText().toString().trim());
+                    } else {
+                        pushDto.setMessage("You are invited to join " + mTeamName.getText().toString().trim());
+                    }
+                    push.setData(JsonUtils.convertObjectToJSONObject(pushDto));
+                    push.sendInBackground();
+
                     if (mGoToHome) {
                         finish();
                         startActivity(new Intent(CreateTeamScreen.this, HomeScreen.class));

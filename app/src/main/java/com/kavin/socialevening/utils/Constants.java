@@ -86,4 +86,14 @@ public final class Constants {
         public static final String OBJECT_ID = "objectId";
         public static final String GO_TO_HOME = "goToHome";
     }
+
+    public final class PushType {
+        public static final int FRIEND_INVITED_TO_TEAM = 101;
+        public static final int FRIEND_ACCEPTED_INVITATION = 102;
+        public static final int FRIEND_DECLINED_INVITATION = 103;
+
+        public static final int CHALLENGE_CREATED = 104;
+        public static final int CHALLENGE_ACCEPTED = 105;
+        public static final int CHALLENGE_DECLINED = 106;
+    }
 }

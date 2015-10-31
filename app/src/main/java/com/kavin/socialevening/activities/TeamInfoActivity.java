@@ -22,12 +22,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kavin.socialevening.R;
+import com.kavin.socialevening.server.dto.PushDto;
 import com.kavin.socialevening.utils.Constants;
+import com.kavin.socialevening.utils.JsonUtils;
 import com.kavin.socialevening.views.RoundedImageView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -156,6 +160,29 @@ public class TeamInfoActivity extends BaseActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+
+                    ParseQuery pushQuery = ParseInstallation.getQuery();
+                    mFriendsList.remove(ParseUser.getCurrentUser().getEmail());
+                    pushQuery.whereContainedIn(Constants.Parse.User.EMAIL, mFriendsList);
+
+                    ParsePush push = new ParsePush();
+                    push.setQuery(pushQuery);
+                    PushDto pushDto = new PushDto();
+                    pushDto.setPushType(Constants.PushType.FRIEND_ACCEPTED_INVITATION);
+                    if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
+                        pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) + " accepted " +
+                                " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
+                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null){
+                        pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) + " accepted " +
+                                " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
+                    } else {
+                        pushDto.setMessage("Invitation declined " +
+                                mTeamObject.getString(Constants.Parse.Team.NAME));
+                    }
+                    push.setData(JsonUtils.convertObjectToJSONObject(pushDto));
+                    push.sendInBackground();
+
+
                     mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Awesome. You are joined " + mTeamObject.getString(Constants.Parse.Team.NAME)
                             , Toast.LENGTH_SHORT).show();
@@ -177,6 +204,28 @@ public class TeamInfoActivity extends BaseActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+
+                    ParseQuery pushQuery = ParseInstallation.getQuery();
+                    pushQuery.whereContainedIn(Constants.Parse.User.EMAIL, mFriendsList);
+
+                    ParsePush push = new ParsePush();
+                    push.setQuery(pushQuery);
+                    PushDto pushDto = new PushDto();
+                    pushDto.setPushType(Constants.PushType.FRIEND_DECLINED_INVITATION);
+                    if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
+                        pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) + " declined " +
+                                " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
+                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null){
+                        pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) + " declined " +
+                                " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
+                    } else {
+                        pushDto.setMessage("Invitation declined " +
+                                mTeamObject.getString(Constants.Parse.Team.NAME));
+                    }
+                    push.setData(JsonUtils.convertObjectToJSONObject(pushDto));
+                    push.sendInBackground();
+
+
                     mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "You have rejected the request."
                             , Toast.LENGTH_SHORT).show();

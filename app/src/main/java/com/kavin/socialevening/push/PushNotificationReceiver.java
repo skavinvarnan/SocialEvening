@@ -11,6 +11,10 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.kavin.socialevening.R;
+import com.kavin.socialevening.activities.HomeScreen;
+import com.kavin.socialevening.server.dto.PushDto;
+import com.kavin.socialevening.utils.Constants;
+import com.kavin.socialevening.utils.JsonUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,64 +32,46 @@ public class PushNotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        if("yes".equals(intent.getAction())) {
-            Log.v("shuffTest", "Pressed YES");
-            return;
-        } else if("maybe".equals(intent.getAction())) {
-            Log.v("shuffTest","Pressed NO");
-            return;
+        PushDto pushDto = (PushDto) JsonUtils.convertJsonStringToObject(intent.getExtras().getString("com.parse.Data"), PushDto.class);
+        if (pushDto.getPushType() == Constants.PushType.FRIEND_INVITED_TO_TEAM) {
+            showNotification(context, "Invitation Received", pushDto.getMessage(), false);
+        } else if (pushDto.getPushType() == Constants.PushType.FRIEND_ACCEPTED_INVITATION) {
+            showNotification(context, "Invitation Accepted", pushDto.getMessage(), false);
+        } else if (pushDto.getPushType() == Constants.PushType.FRIEND_DECLINED_INVITATION) {
+            showNotification(context, "Invitation Declined", pushDto.getMessage(), false);
         }
 
-        System.out.println("Opened the broadcast reciver");
-        try {
-            String action = intent.getAction();
-            String channel = intent.getExtras().getString("com.parse.Channel");
-            JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-
-            Log.d(TAG, "got action " + action + " on channel " + channel + " with:");
-            Iterator itr = json.keys();
-            while (itr.hasNext()) {
-                String key = (String) itr.next();
-                Log.d(TAG, "..." + key + " => " + json.getString(key));
-            }
-
-            //dispatchTakePictureIntent();
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            final NotificationCompat.Builder notif = new NotificationCompat.Builder(context)
-                    .setContentTitle("title")
-                    .setContentText("text")
-                            //      .setTicker(getString(R.string.tick)) removed, seems to not show at all
-                            //      .setWhen(System.currentTimeMillis()) removed, match default
-                            //      .setContentIntent(contentIntent) removed, I don't neet it
-                    .setColor(context.getResources().getColor(R.color.color_primary)) //ok
-                    .setDefaults(Notification.DEFAULT_VIBRATE)
-                    .setSmallIcon(R.drawable.facebook_login_blue) //ok
-
-                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.team_avatar))
-                            //      .setCategory(Notification.CATEGORY_CALL) does not seem to make a difference
-                    .setPriority(Notification.DEFAULT_VIBRATE); //does not seem to make a difference
-            //      .setVisibility(Notification.VISIBILITY_PRIVATE); //does not seem to make a difference
+    }
 
 
-            //Yes intent
+    private void showNotification(Context context, String title, String message, boolean showAction) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        Intent myIntent = new Intent(context, HomeScreen.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, myIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        final NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(pendingIntent)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setSmallIcon(R.drawable.moon)
+                .setAutoCancel(true)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
+                .setPriority(Notification.DEFAULT_VIBRATE);
+
+        if (showAction) {
             Intent yesReceive = new Intent(context, ActionBroadcast.class);
             yesReceive.setAction("yes");
             PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-            notif.addAction(R.drawable.ic_done_black, "Yes", pendingIntentYes);
+            notification.addAction(R.drawable.ic_done_black, "Yes", pendingIntentYes);
 
-//Maybe intent
             Intent maybeReceive = new Intent(context, ActionBroadcast.class);
             maybeReceive.setAction("maybe");
             PendingIntent pendingIntentMaybe = PendingIntent.getBroadcast(context, 12345, maybeReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-            notif.addAction(R.drawable.ic_clear_black, "Partly", pendingIntentMaybe);
+            notification.addAction(R.drawable.ic_clear_black, "Partly", pendingIntentMaybe);
 
-
-
-
-            notificationManager.notify(123, notif.build());
-        } catch (JSONException e) {
-            Log.d(TAG, "JSONException: " + e.getMessage());
         }
+        notificationManager.notify(123, notification.build());
     }
 }

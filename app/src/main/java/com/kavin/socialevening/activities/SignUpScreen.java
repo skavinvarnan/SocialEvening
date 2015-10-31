@@ -19,6 +19,7 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -60,6 +61,11 @@ public class SignUpScreen extends BaseActivity {
         if (Utils.isOnline()) {
             if (validate()) {
                 mProgressDialog.show();
+
+                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                installation.put(Constants.Parse.User.EMAIL, mEmail.getText().toString().trim());
+                installation.saveInBackground();
+
                 ParseUser user = new ParseUser();
                 user.setUsername(mEmail.getText().toString().trim());
                 user.setPassword(mPassword.getText().toString());
@@ -160,6 +166,10 @@ public class SignUpScreen extends BaseActivity {
     }
 
     private void saveMoreInfoToParse(String id, String name, String email) {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put(Constants.Parse.User.EMAIL, email);
+        installation.saveInBackground();
+
         ParseUser user = ParseUser.getCurrentUser();
         user.setEmail(email);
         user.put(Constants.Parse.User.FB_NAME, name);

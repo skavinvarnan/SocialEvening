@@ -17,6 +17,7 @@ import com.kavin.socialevening.utils.Utils;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -80,6 +81,9 @@ public class SignInScreen extends BaseActivity {
                 ParseUser.logInInBackground(mEmail.getText().toString().trim(), mPassword.getText().toString(), new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
+                            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                            installation.put(Constants.Parse.User.EMAIL, mEmail.getText().toString().trim());
+                            installation.saveInBackground();
                             proceedToNextScreen();
                         } else {
                             mProgressDialog.dismiss();
@@ -153,6 +157,10 @@ public class SignInScreen extends BaseActivity {
     }
 
     private void saveMoreInfoToParse(String id, String name, String email) {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put(Constants.Parse.User.EMAIL, email);
+        installation.saveInBackground();
+
         ParseUser user = ParseUser.getCurrentUser();
         user.setEmail(email);
         user.put(Constants.Parse.User.FB_NAME, name);

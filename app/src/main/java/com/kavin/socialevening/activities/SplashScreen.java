@@ -16,6 +16,7 @@ public class SplashScreen extends BaseActivity {
         setContentView(R.layout.activity_splash_screen);
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
+        startActivity(new Intent(this, HomeScreen.class));
     }
 
     @OnClick(R.id.sign_up)

@@ -28,6 +28,7 @@ import com.kavin.socialevening.R;
 import com.kavin.socialevening.helper.BitmapHelper;
 import com.kavin.socialevening.helper.GpsHelper;
 import com.kavin.socialevening.interfaces.GpsLocationListener;
+import com.kavin.socialevening.utils.Constants;
 import com.kavin.socialevening.views.RoundedImageView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -253,14 +254,20 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
         for (Friend friend: mFriendList) {
             strings.add(friend.email);
         }
-        ParseObject team = new ParseObject("Team");
-        team.put("picture", parseFile);
-        team.put("name", mTeamName.getText().toString().trim());
-        team.put("locationName", mObtainedLocation);
-        team.put("latitude", mObtainedLatitude);
-        team.put("longitude", mObtainedLongitude);
-        team.put("friendsList", strings);
-        team.put("teamAdmin", ParseUser.getCurrentUser());
+        
+        List<String> joinedFriends = new ArrayList<String>();
+        strings.add(ParseUser.getCurrentUser().getEmail());
+        joinedFriends.add(ParseUser.getCurrentUser().getEmail());
+
+        ParseObject team = new ParseObject(Constants.Parse.Team.TEAM);
+        team.put(Constants.Parse.Team.PICTURE, parseFile);
+        team.put(Constants.Parse.Team.NAME, mTeamName.getText().toString().trim());
+        team.put(Constants.Parse.Team.LOCATION_NAME, mObtainedLocation);
+        team.put(Constants.Parse.Team.LATITUDE, mObtainedLatitude);
+        team.put(Constants.Parse.Team.LONGITUDE, mObtainedLongitude);
+        team.put(Constants.Parse.Team.FRIENDS_LIST, strings);
+        team.put(Constants.Parse.Team.JOINED_FRIENDS, joinedFriends);
+        team.put(Constants.Parse.Team.TEAM_ADMIN, ParseUser.getCurrentUser());
         team.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

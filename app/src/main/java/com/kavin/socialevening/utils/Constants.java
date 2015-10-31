@@ -1,5 +1,7 @@
 package com.kavin.socialevening.utils;
 
+import com.parse.ParseUser;
+
 /**
  * Copyright 2015 (C) Virtual Applets
  * Created on : 30/10/15
@@ -39,9 +41,23 @@ public final class Constants {
 
     public final class Parse {
         public final class User {
+            public static final String USER = "User";
             public static final String FB_ID = "fbId";
             public static final String FB_NAME = "fbName";
             public static final String NAME = "name";
+        }
+
+        public final class Team {
+            public static final String TEAM = "Team";
+            public static final String NAME = "name";
+            public static final String PICTURE = "picture";
+            public static final String LOCATION_NAME = "locationName";
+            public static final String LATITUDE = "latitude";
+            public static final String LONGITUDE = "longitude";
+            public static final String FRIENDS_LIST = "friendsList";
+            public static final String TEAM_ADMIN = "teamAdmin";
+            public static final String JOINED_FRIENDS = "joinedFriends";
+
         }
     }
 
@@ -55,4 +71,6 @@ public final class Constants {
         public static final String LAST_FETCHED_LAT = "lastFetchedLat";
         public static final String LAST_FETCHED_LONG = "lastFetchedLong";
     }
+
+
 }

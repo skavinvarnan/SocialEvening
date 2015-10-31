@@ -60,6 +60,13 @@ public final class Constants {
             public static final String JOINED_FRIENDS = "joinedFriends";
 
         }
+
+        public final class Challenge {
+            public static final String CHALLENGE = "Challenge";
+            public static final String CHALLENGE_TO = "challengeTo";
+            public static final String CHALLENGE_FROM = "challengeFrom";
+            public static final String CHALLENGE_STRING = "challengeString";
+        }
     }
 
     public final class SP {

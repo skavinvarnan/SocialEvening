@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.kavin.socialevening.R;
+import com.kavin.socialevening.activities.ChallengeScreen;
 import com.kavin.socialevening.activities.TeamInfoActivity;
+import com.kavin.socialevening.fragment.ChallengesFragment;
 import com.kavin.socialevening.utils.Constants;
 import com.kavin.socialevening.views.RoundedImageView;
 import com.parse.ParseFile;
@@ -63,6 +65,13 @@ public class NearByAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, ChallengeScreen.class).putExtra(Constants.Intent.OBJECT_ID, mTeamObjectList.get(position).getObjectId()));
+            }
+        });
 
         ParseFile imageFile = mTeamObjectList.get(position).getParseFile(Constants.Parse.Team.PICTURE);
         Picasso.with(mContext).load(imageFile.getUrl()).error(R.drawable.team_avatar).placeholder(R.drawable.team_avatar)

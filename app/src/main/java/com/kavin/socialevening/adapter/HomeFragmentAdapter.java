@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.kavin.socialevening.fragment.ChallengesFragment;
 import com.kavin.socialevening.fragment.MyTeamsFragment;
 import com.kavin.socialevening.fragment.NearByTeamFragment;
+import com.kavin.socialevening.fragment.RewardFragment;
 
 /**
  * Copyright 2015 (C) Virtual Applets
@@ -16,12 +17,13 @@ import com.kavin.socialevening.fragment.NearByTeamFragment;
  */
 public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] {"My Teams", "Near by", "Challenges"};
+    private String tabTitles[] = new String[] {"My Teams", "Near by", "Challenges", "Reward"};
     private Context mContext;
 
     private MyTeamsFragment mMyTeamsFragment;
     private NearByTeamFragment mNearByTeamFragment;
     private ChallengesFragment mChallengesFragment;
+    private RewardFragment mRewardFragment;
 
     public HomeFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -51,6 +53,11 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
                     mChallengesFragment = new ChallengesFragment();
                 }
                 return mChallengesFragment;
+            case 3:
+                if (mRewardFragment == null) {
+                    mRewardFragment = new RewardFragment();
+                }
+                return mRewardFragment;
             default:
                 return null;
         }

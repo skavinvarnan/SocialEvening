@@ -92,8 +92,8 @@ public class NearByTeamFragment extends Fragment {
     }
 
     @OnClick(R.id.my_fab)
-    protected void addTeamClicked() {
-        startActivity(new Intent(getActivity(), CreateTeamScreen.class));
+    protected void mapClicked() {
+//        startActivity(new Intent(getActivity(), CreateTeamScreen.class));
     }
 
     @Override

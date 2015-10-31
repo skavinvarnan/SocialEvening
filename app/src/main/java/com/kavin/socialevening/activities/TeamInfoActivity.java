@@ -1,9 +1,14 @@
 package com.kavin.socialevening.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +41,10 @@ import butterknife.OnClick;
 
 public class TeamInfoActivity extends BaseActivity {
 
+    private static final int PICK_CONTACT = 1002;
+
+    public static final String EMAIL = "email";
+
     private ParseObject mTeamObject;
 
     @Bind(R.id.image)
@@ -65,6 +74,10 @@ public class TeamInfoActivity extends BaseActivity {
     private List<String> mJoinedFriends;
     private List<String> mFriendsList;
     private ProgressDialog mProgressDialog;
+
+    private TeamInfoMemberAdapter mTeamInfoMemberAdapter;
+
+    private boolean mShowAddPersonButton = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +119,9 @@ public class TeamInfoActivity extends BaseActivity {
         if (!teamAdmin.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
             List<String> friends = (List<String>) mTeamObject.get(Constants.Parse.Team.JOINED_FRIENDS);
             if (!friends.contains(ParseUser.getCurrentUser().getEmail())) {
+                mShowAddPersonButton = false;
                 mRequested.setVisibility(View.VISIBLE);
+                invalidateOptionsMenu();
             }
         }
 
@@ -123,7 +138,9 @@ public class TeamInfoActivity extends BaseActivity {
         mJoinedFriends = (List<String>) mTeamObject.get(Constants.Parse.Team.JOINED_FRIENDS);
         mFriendsList = (List<String>) mTeamObject.get(Constants.Parse.Team.FRIENDS_LIST);
 
-        mList.setAdapter(new TeamInfoMemberAdapter());
+        mTeamInfoMemberAdapter = new TeamInfoMemberAdapter();
+
+        mList.setAdapter(mTeamInfoMemberAdapter);
 
 
         Log.d("asdf", "sadf");
@@ -175,9 +192,53 @@ public class TeamInfoActivity extends BaseActivity {
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
+            case 1001:
+                startActivityForResult(new Intent(this, PickContactScreen.class), PICK_CONTACT);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PICK_CONTACT) {
+                if (data != null && data.getExtras() != null && data.getExtras().getString(EMAIL) != null) {
+                    final String email = data.getExtras().getString(EMAIL);
+                    mProgressDialog.setMessage("Adding " + email);
+                    mProgressDialog.show();
+                    mFriendsList.add(email);
+                    mTeamObject.remove(Constants.Parse.Team.FRIENDS_LIST);
+                    mTeamObject.put(Constants.Parse.Team.FRIENDS_LIST, mFriendsList);
+                    mTeamObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                mTeamInfoMemberAdapter.notifyDataSetChanged();
+                                mFriendsList = (List<String>) mTeamObject.get(Constants.Parse.Team.FRIENDS_LIST);
+                                mProgressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Added " + email
+                                        , Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                mProgressDialog.dismiss();
+                            }
+                        }
+                    });
+                    mProgressDialog.setMessage("Please wait...");
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (mShowAddPersonButton) {
+            menu.add(Menu.NONE, 1001, Menu.NONE, "Create").setIcon(R.drawable.ic_person_add).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+        return true;
     }
 
     class TeamInfoMemberAdapter extends BaseAdapter {
@@ -240,7 +301,8 @@ public class TeamInfoActivity extends BaseActivity {
                             }
                         }
                     } else {
-
+                        viewHolder.teamName.setText(mFriendsList.get(position));
+                        viewHolder.status.setText("Not on Social Evening");
                     }
                 }
             });

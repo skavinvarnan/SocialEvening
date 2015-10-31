@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.kavin.socialevening.fragment.ChallengesFragment;
 import com.kavin.socialevening.fragment.MyTeamsFragment;
+import com.kavin.socialevening.fragment.NearByTeamFragment;
 
 /**
  * Copyright 2015 (C) Virtual Applets
@@ -18,6 +20,8 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
 
     private MyTeamsFragment mMyTeamsFragment;
+    private NearByTeamFragment mNearByTeamFragment;
+    private ChallengesFragment mChallengesFragment;
 
     public HomeFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -31,10 +35,26 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-//        if (mMyTeamsFragment == null) {
-//            mMyTeamsFragment = new MyTeamsFragment();
-//        }
-        return new MyTeamsFragment();
+        switch (position) {
+            case 0:
+                if (mMyTeamsFragment == null) {
+                    mMyTeamsFragment = new MyTeamsFragment();
+                }
+                return mMyTeamsFragment;
+            case 1:
+                if (mNearByTeamFragment == null) {
+                    mNearByTeamFragment = new NearByTeamFragment();
+                }
+                return mNearByTeamFragment;
+            case 2:
+                if (mChallengesFragment == null) {
+                    mChallengesFragment = new ChallengesFragment();
+                }
+                return mChallengesFragment;
+            default:
+                return null;
+        }
+
     }
 
     @Override

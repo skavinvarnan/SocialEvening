@@ -24,13 +24,12 @@ import java.util.List;
  * Created on : 31/10/15
  * Author     : Kavin Varnan
  */
-public class MyTeamAdapter extends BaseAdapter {
-
+public class NearByAdapter extends BaseAdapter {
     private Context mContext;
     private List<ParseObject> mTeamObjectList;
 
 
-    public MyTeamAdapter(Context context, List<ParseObject> parseObjects) {
+    public NearByAdapter(Context context, List<ParseObject> parseObjects) {
         this.mContext = context;
         this.mTeamObjectList = parseObjects;
     }
@@ -71,25 +70,7 @@ public class MyTeamAdapter extends BaseAdapter {
         viewHolder.teamName.setText(mTeamObjectList.get(position).getString(Constants.Parse.Team.NAME));
         viewHolder.createdAt.setText("Created @ " + mTeamObjectList.get(position).getString(Constants.Parse.Team.LOCATION_NAME));
 
-        ParseUser teamAdmin = mTeamObjectList.get(position).getParseUser(Constants.Parse.Team.TEAM_ADMIN);
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, TeamInfoActivity.class).putExtra(Constants.Intent.OBJECT_ID, mTeamObjectList.get(position).getObjectId()));
-            }
-        });
-
-        if (teamAdmin.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
-            viewHolder.status.setText("You are the admin");
-        } else {
-            List<String> friends = (List<String>) mTeamObjectList.get(position).get(Constants.Parse.Team.JOINED_FRIENDS);
-            if (friends.contains(ParseUser.getCurrentUser().getEmail())) {
-                viewHolder.status.setText("You are a member");
-            } else {
-                viewHolder.status.setText("You are invited. Click to join");
-            }
-        }
+        viewHolder.status.setText("Click to challenge");
 
         return convertView;
     }
@@ -100,5 +81,4 @@ public class MyTeamAdapter extends BaseAdapter {
         public TextView createdAt;
         public TextView status;
     }
-
 }

@@ -1,17 +1,20 @@
 package com.kavin.socialevening.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kavin.socialevening.R;
 import com.kavin.socialevening.utils.Constants;
@@ -22,6 +25,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -58,10 +62,17 @@ public class TeamInfoActivity extends BaseActivity {
     @Bind(R.id.progress_bar)
     protected ProgressBar mProgressBar;
 
+    private List<String> mJoinedFriends;
+    private List<String> mFriendsList;
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_info);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCancelable(false);
         ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString(Constants.Intent.OBJECT_ID) != null) {
             mMainLayout.setVisibility(View.GONE);
@@ -109,19 +120,53 @@ public class TeamInfoActivity extends BaseActivity {
 
         mAddress.setText("@ " + mTeamObject.getString(Constants.Parse.Team.LOCATION_NAME));
 
-        List<String> joinedFriends = (List<String>) mTeamObject.get(Constants.Parse.Team.JOINED_FRIENDS);
-        List<String> friendsList = (List<String>) mTeamObject.get(Constants.Parse.Team.FRIENDS_LIST);
+        mJoinedFriends = (List<String>) mTeamObject.get(Constants.Parse.Team.JOINED_FRIENDS);
+        mFriendsList = (List<String>) mTeamObject.get(Constants.Parse.Team.FRIENDS_LIST);
+
+        mList.setAdapter(new TeamInfoMemberAdapter());
+
+
         Log.d("asdf", "sadf");
     }
 
     @OnClick(R.id.accept)
     protected void accepted() {
-
+        mProgressDialog.show();
+        mJoinedFriends.add(ParseUser.getCurrentUser().getEmail());
+        mTeamObject.remove(Constants.Parse.Team.JOINED_FRIENDS);
+        mTeamObject.put(Constants.Parse.Team.JOINED_FRIENDS, mJoinedFriends);
+        mTeamObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Awesome. You are joined " + mTeamObject.getString(Constants.Parse.Team.NAME)
+                            , Toast.LENGTH_SHORT).show();
+                } else {
+                    mProgressDialog.dismiss();
+                }
+            }
+        });
     }
 
     @OnClick(R.id.reject)
     protected void rejected() {
-
+        mProgressDialog.show();
+        mFriendsList.remove(ParseUser.getCurrentUser().getEmail());
+        mTeamObject.remove(Constants.Parse.Team.FRIENDS_LIST);
+        mTeamObject.put(Constants.Parse.Team.FRIENDS_LIST, mFriendsList);
+        mTeamObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "You have rejected the request."
+                            , Toast.LENGTH_SHORT).show();
+                } else {
+                    mProgressDialog.dismiss();
+                }
+            }
+        });
     }
 
     @Override
@@ -132,6 +177,83 @@ public class TeamInfoActivity extends BaseActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    class TeamInfoMemberAdapter extends BaseAdapter {
+
+
+        @Override
+        public int getCount() {
+            return mFriendsList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder;
+            if (convertView == null) {
+                viewHolder = new ViewHolder();
+                convertView = LayoutInflater.from(TeamInfoActivity.this).inflate(R.layout.team_info_list_item, null);
+                viewHolder.image = (RoundedImageView) convertView.findViewById(R.id.image);
+                viewHolder.teamName = (TextView) convertView.findViewById(R.id.name);
+                viewHolder.status = (TextView) convertView.findViewById(R.id.status);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            viewHolder.teamName.setText("Loading");
+            viewHolder.status.setText("Loading");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.Parse.User.USER);
+            query.whereEqualTo(Constants.Parse.User.EMAIL, mFriendsList.get(position));
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject object, ParseException e) {
+                    if (e == null) {
+                        if (object.getString(Constants.Parse.User.FB_NAME) != null) {
+                            viewHolder.teamName.setText(object.getString(Constants.Parse.User.FB_NAME));
+                            Picasso.with(TeamInfoActivity.this).load("https://graph.facebook.com/" + object.getString(Constants.Parse.User.FB_ID) +
+                                            "/picture?type=normal"
+                                    )
+                                    .error(R.drawable.ic_face_black).placeholder(R.drawable.ic_face_black)
+                                    .into(viewHolder.image);
+                        } else {
+                            viewHolder.teamName.setText(object.getString(Constants.Parse.User.NAME));
+                        }
+                        ParseUser teamAdmin = mTeamObject.getParseUser(Constants.Parse.Team.TEAM_ADMIN);
+                        if (teamAdmin.getObjectId().equals(object.getObjectId())) {
+                            viewHolder.status.setText("Team admin");
+                        } else {
+                            if (mJoinedFriends.contains(object.getString(Constants.Parse.User.EMAIL))) {
+                                viewHolder.status.setText("Member");
+                            } else {
+                                viewHolder.status.setText("Requested to join");
+                            }
+                        }
+                    } else {
+
+                    }
+                }
+            });
+
+
+            return convertView;
+        }
+
+        class ViewHolder {
+            public RoundedImageView image;
+            public TextView teamName;
+            public TextView createdAt;
+            public TextView status;
         }
     }
 }

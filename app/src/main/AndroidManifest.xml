@@ -101,6 +101,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activities.TeamInfoActivity" >
         </activity>
+        <activity android:name=".activities.ChallengeScreen" >
+        </activity>
     </application>
 
 </manifest>

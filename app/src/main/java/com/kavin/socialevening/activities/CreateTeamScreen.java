@@ -380,6 +380,6 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
     @Override
     public void onBackPressed() {
         finish();
-        startActivity(new Intent(this, WelcomeScreen.class));
+        startActivity(new Intent(this, HomeScreen.class));
     }
 }

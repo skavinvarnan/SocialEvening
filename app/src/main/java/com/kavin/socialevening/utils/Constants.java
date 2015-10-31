@@ -41,10 +41,11 @@ public final class Constants {
 
     public final class Parse {
         public final class User {
-            public static final String USER = "User";
+            public static final String USER = "_User";
             public static final String FB_ID = "fbId";
             public static final String FB_NAME = "fbName";
             public static final String NAME = "name";
+            public static final String EMAIL = "email";
         }
 
         public final class Team {

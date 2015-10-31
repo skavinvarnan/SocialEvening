@@ -1,14 +1,14 @@
 package com.kavin.socialevening.activities;
 
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * Copyright 2015 (C) Virtual Applets
@@ -16,6 +16,8 @@ import android.view.WindowManager;
  * Author     : Kavin Varnan
  */
 public class BaseActivity extends AppCompatActivity {
+
+    boolean mDoubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,5 +76,23 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 });
         alertDialog.show();
+    }
+
+    public void doubleBackExit() {
+        if (mDoubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.mDoubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                mDoubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }

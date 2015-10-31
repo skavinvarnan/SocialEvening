@@ -1,5 +1,6 @@
 package com.kavin.socialevening.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -41,10 +42,15 @@ public class SignUpScreen extends BaseActivity {
     @Bind(R.id.name)
     protected EditText mName;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_screen);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Signing up...");
+        mProgressDialog.setCancelable(false);
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
     }
@@ -53,6 +59,7 @@ public class SignUpScreen extends BaseActivity {
     protected void signUp() {
         if (Utils.isOnline()) {
             if (validate()) {
+                mProgressDialog.show();
                 ParseUser user = new ParseUser();
                 user.setUsername(mEmail.getText().toString().trim());
                 user.setPassword(mPassword.getText().toString());
@@ -63,6 +70,7 @@ public class SignUpScreen extends BaseActivity {
                         if (e == null) {
                             proceedToNextScreen();
                         } else {
+                            mProgressDialog.dismiss();
                             showQuickDialog("Error", "Error occurred while saving details to the server", false);
                         }
                     }
@@ -104,11 +112,13 @@ public class SignUpScreen extends BaseActivity {
     @OnClick(R.id.login_with_fb)
     protected void loginWithFb() {
         if (Utils.isOnline()) {
+            mProgressDialog.show();
             final List<String> permissions = Arrays.asList("public_profile", "email");
             ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException err) {
                     if (user == null) {
+                        mProgressDialog.dismiss();
                         showQuickDialog("Facebook login", "User cancelled the facebook login", false);
                     } else if (user.isNew()) {
                         fetchMoreDetailsFromFacebook();
@@ -157,6 +167,7 @@ public class SignUpScreen extends BaseActivity {
                 if (e == null) {
                     proceedToNextScreen();
                 } else {
+                    mProgressDialog.dismiss();
                     showQuickDialog("Error", "Error occurred while saving details to the server", false);
                 }
             }
@@ -178,6 +189,7 @@ public class SignUpScreen extends BaseActivity {
 
     private void proceedToNextScreen() {
         finish();
+        mProgressDialog.dismiss();
         startActivity(new Intent(this, WelcomeScreen.class));
     }
 }

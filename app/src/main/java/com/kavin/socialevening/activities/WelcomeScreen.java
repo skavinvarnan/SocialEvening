@@ -73,12 +73,17 @@ public class WelcomeScreen extends BaseActivity implements GpsLocationListener {
         } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null) {
             mName.setText(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME).toString());
         }
+    }
 
-
+    @OnClick(R.id.take_me_home)
+    protected void takeMeHome() {
+        finish();
+        startActivity(new Intent(this, HomeScreen.class));
     }
 
     @OnClick(R.id.create_a_team)
     protected void createATeam() {
+        finish();
         startActivity(new Intent(this, CreateTeamScreen.class));
     }
 
@@ -86,5 +91,10 @@ public class WelcomeScreen extends BaseActivity implements GpsLocationListener {
     @Override
     public void onGpsLocationObtainedListener(String location, double latitude, double longitude) {
         mAddress.setText("you are @ " + location);
+    }
+
+    @Override
+    public void onBackPressed() {
+        doubleBackExit();
     }
 }

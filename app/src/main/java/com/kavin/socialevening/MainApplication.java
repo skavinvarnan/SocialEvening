@@ -6,6 +6,7 @@ import android.content.Context;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
+import com.splunk.mint.Mint;
 
 /**
  * Copyright 2015 (C) Virtual Applets
@@ -28,6 +29,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Mint.initAndStartSession(getApplicationContext(), "8355157a");
         // Clearing context just in case if there is any memory leak since we are using static
         context = null;
         context = getApplicationContext();

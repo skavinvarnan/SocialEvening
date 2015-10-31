@@ -229,34 +229,11 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
         mSelectedImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         mProgressDialog.setMessage("Uploading image");
-        final ParseFile imgfile = new ParseFile("photo.jpg", byteArray);
-        imgfile.saveInBackground(new SaveCallback() {
+        final ParseFile parseFile = new ParseFile("photo.jpg", byteArray);
+        parseFile.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
                 if (e == null) {
-                    mProgressDialog.setMessage("Image uploaded. Saving team");
-                    List<String> strings = new ArrayList<String>();
-                    for (Friend friend: mFriendList) {
-                        strings.add(friend.email);
-                    }
-                    ParseObject team = new ParseObject("Team");
-                    team.put("picture", imgfile);
-                    team.put("name", mTeamName.getText().toString().trim());
-                    team.put("locationName", mObtainedLocation);
-                    team.put("latitude", mObtainedLatitude);
-                    team.put("longitude", mObtainedLongitude);
-                    team.put("friendsList", strings);
-                    team.put("teamAdmin", ParseUser.getCurrentUser());
-                    team.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                mProgressDialog.dismiss();
-                            } else {
-                                mProgressDialog.dismiss();
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    saveTeam(parseFile);
                 } else {
                     mProgressDialog.dismiss();
                     e.printStackTrace();
@@ -268,6 +245,33 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
             }
         });
 
+    }
+
+    private void saveTeam(ParseFile parseFile) {
+        mProgressDialog.setMessage("Image uploaded. Saving team");
+        List<String> strings = new ArrayList<String>();
+        for (Friend friend: mFriendList) {
+            strings.add(friend.email);
+        }
+        ParseObject team = new ParseObject("Team");
+        team.put("picture", parseFile);
+        team.put("name", mTeamName.getText().toString().trim());
+        team.put("locationName", mObtainedLocation);
+        team.put("latitude", mObtainedLatitude);
+        team.put("longitude", mObtainedLongitude);
+        team.put("friendsList", strings);
+        team.put("teamAdmin", ParseUser.getCurrentUser());
+        team.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    mProgressDialog.dismiss();
+                } else {
+                    mProgressDialog.dismiss();
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private boolean validate() {
@@ -364,5 +368,11 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
     class Friend {
         public String name;
         public String email;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(this, WelcomeScreen.class));
     }
 }

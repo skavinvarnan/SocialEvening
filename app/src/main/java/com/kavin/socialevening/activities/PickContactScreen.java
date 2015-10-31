@@ -42,7 +42,7 @@ public class PickContactScreen extends BaseActivity implements ContactSelectedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_contact_screen);
-        setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
+        setColors(R.color.color_primary, R.color.color_primary_dark, R.color.color_primary);
         ButterKnife.bind(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (getSupportActionBar() != null) {

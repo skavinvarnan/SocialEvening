@@ -91,7 +91,7 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
         setContentView(R.layout.activity_create_team_screen);
         ButterKnife.bind(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        setColors(R.color.color_primary, R.color.color_primary, R.color.color_primary);
+        setColors(R.color.color_primary, R.color.color_primary_dark, R.color.color_primary);
         mBitmapHelper = new BitmapHelper(this);
         mGpsHelper = new GpsHelper(this);
         mGpsHelper.setGpsLocationListener(this);

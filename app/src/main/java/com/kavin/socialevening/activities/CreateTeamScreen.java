@@ -254,7 +254,7 @@ public class CreateTeamScreen extends BaseActivity implements GpsLocationListene
         for (Friend friend: mFriendList) {
             strings.add(friend.email);
         }
-        
+
         List<String> joinedFriends = new ArrayList<String>();
         strings.add(ParseUser.getCurrentUser().getEmail());
         joinedFriends.add(ParseUser.getCurrentUser().getEmail());

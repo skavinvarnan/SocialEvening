@@ -1,16 +1,19 @@
 package com.kavin.socialevening.fragment;
 
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kavin.socialevening.R;
 import com.kavin.socialevening.activities.CreateTeamScreen;
@@ -24,6 +27,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +53,6 @@ public class NearByTeamFragment extends Fragment {
     @Bind(R.id.no_item)
     protected TextView mNoItem;
 
-    @Bind(R.id.my_fab)
-    protected FloatingActionButton mAddTeam;
 
     private NearByAdapter mNearByAdapter;
 
@@ -89,12 +91,57 @@ public class NearByTeamFragment extends Fragment {
                 }
             }
         });
+
+
+        mList.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener() {
+            @SuppressWarnings("rawtypes")
+            public boolean onItemLongClick(AdapterView parent, View view, final int position, long id) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Join Team");
+                alertDialog.setMessage("Do you like to join " + mNearByAdapter.getTeamObjectList().get(position).getString(Constants.Parse.Team.NAME));
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                                ParseObject parseObject = mNearByAdapter.getTeamObjectList().get(position);
+                                List<String> mFriendsList = (List<String>) parseObject.get(Constants.Parse.Team.FRIENDS_LIST);
+                                List<String> mJoinedList = (List<String>) parseObject.get(Constants.Parse.Team.JOINED_FRIENDS);
+                                mFriendsList.add(ParseUser.getCurrentUser().getEmail());
+                                mJoinedList.add(ParseUser.getCurrentUser().getEmail());
+                                parseObject.remove(Constants.Parse.Team.FRIENDS_LIST);
+                                parseObject.remove(Constants.Parse.Team.JOINED_FRIENDS);
+                                parseObject.put(Constants.Parse.Team.FRIENDS_LIST, mFriendsList);
+                                parseObject.put(Constants.Parse.Team.JOINED_FRIENDS, mJoinedList);
+                                parseObject.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            mNearByAdapter.notifyDataSetChanged();
+
+                                            Toast.makeText(getActivity(), "Joined " + mNearByAdapter.getTeamObjectList().get(position).getString(Constants.Parse.Team.NAME)
+                                                    , Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getActivity(), "Error occured while joining"
+                                                    , Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+                return false;
+            }
+        });
     }
 
-    @OnClick(R.id.my_fab)
-    protected void mapClicked() {
-//        startActivity(new Intent(getActivity(), CreateTeamScreen.class));
-    }
 
     @Override
     public void onResume() {

@@ -1,5 +1,6 @@
 package com.kavin.socialevening.activities;
 
+import android.app.ProgressDialog;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class ChallengeScreen extends BaseActivity {
     protected Button mChallengeButton;
     @Bind(R.id.main_layout)
     protected LinearLayout mMainLayout;
+    private ProgressDialog mProgressDialog;
 
     private ParseObject mTeamObject;
 
@@ -64,6 +66,9 @@ public class ChallengeScreen extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_screen);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setCancelable(false);
         ButterKnife.bind(this);
         setColors(R.color.color_primary, R.color.color_primary_dark, R.color.color_primary);
         if (getSupportActionBar() != null) {
@@ -141,17 +146,21 @@ public class ChallengeScreen extends BaseActivity {
 
     @OnClick(R.id.button)
     protected void challengeClicked() {
+        mProgressDialog.show();
         ParseObject challenge = new ParseObject(Constants.Parse.Challenge.CHALLENGE);
         challenge.put(Constants.Parse.Challenge.CHALLENGE_TO, mTeamObject);
+        challenge.put(Constants.Parse.Challenge.ACCEPTED, false);
         challenge.put(Constants.Parse.Challenge.CHALLENGE_FROM, mMyTeams.get(mSpinner.getSelectedItemPosition()));
         challenge.put(Constants.Parse.Challenge.CHALLENGE_STRING, "Challenge #" + (mViewPager.getCurrentItem() + 1));
         challenge.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Challenge sent :)", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
+                    mProgressDialog.dismiss();
                     showQuickDialog("Error", "Error creating challenge", false);
                 }
             }

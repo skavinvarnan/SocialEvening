@@ -66,6 +66,7 @@ public final class Constants {
             public static final String CHALLENGE_TO = "challengeTo";
             public static final String CHALLENGE_FROM = "challengeFrom";
             public static final String CHALLENGE_STRING = "challengeString";
+            public static final String ACCEPTED = "accepted";
         }
     }
 

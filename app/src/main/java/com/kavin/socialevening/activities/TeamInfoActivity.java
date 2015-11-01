@@ -90,6 +90,7 @@ public class TeamInfoActivity extends BaseActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCancelable(false);
+        setColors(R.color.color_primary, R.color.color_primary_dark, R.color.color_primary);
         ButterKnife.bind(this);
         if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString(Constants.Intent.OBJECT_ID) != null) {
             mMainLayout.setVisibility(View.GONE);
@@ -172,7 +173,7 @@ public class TeamInfoActivity extends BaseActivity {
                     if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
                         pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) + " accepted " +
                                 " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
-                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null){
+                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null) {
                         pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) + " accepted " +
                                 " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
                     } else {
@@ -215,7 +216,7 @@ public class TeamInfoActivity extends BaseActivity {
                     if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
                         pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) + " declined " +
                                 " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
-                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null){
+                    } else if (ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) != null) {
                         pushDto.setMessage(ParseUser.getCurrentUser().get(Constants.Parse.User.NAME) + " declined " +
                                 " invitation to join " + mTeamObject.getString(Constants.Parse.Team.NAME));
                     } else {

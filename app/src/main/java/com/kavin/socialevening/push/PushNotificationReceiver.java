@@ -39,6 +39,10 @@ public class PushNotificationReceiver extends BroadcastReceiver {
             showNotification(context, "Invitation Accepted", pushDto.getMessage(), false);
         } else if (pushDto.getPushType() == Constants.PushType.FRIEND_DECLINED_INVITATION) {
             showNotification(context, "Invitation Declined", pushDto.getMessage(), false);
+        } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_ACCEPTED) {
+            showNotification(context, "Challenge Accepted", pushDto.getMessage(), false);
+        } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_DECLINED) {
+            showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
         }
 
     }

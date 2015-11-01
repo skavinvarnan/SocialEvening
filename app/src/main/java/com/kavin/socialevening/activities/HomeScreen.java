@@ -37,7 +37,7 @@ public class HomeScreen extends BaseActivity {
 
         mHomeFragmentAdapter = new HomeFragmentAdapter(getSupportFragmentManager(), this);
         mViewPager.setAdapter(mHomeFragmentAdapter);
-
+        mViewPager.setOffscreenPageLimit(1);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);

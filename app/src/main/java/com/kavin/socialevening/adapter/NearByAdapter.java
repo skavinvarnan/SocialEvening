@@ -30,6 +30,9 @@ public class NearByAdapter extends BaseAdapter {
     private Context mContext;
     private List<ParseObject> mTeamObjectList;
 
+    public List<ParseObject> getTeamObjectList() {
+        return mTeamObjectList;
+    }
 
     public NearByAdapter(Context context, List<ParseObject> parseObjects) {
         this.mContext = context;

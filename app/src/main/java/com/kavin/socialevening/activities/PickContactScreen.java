@@ -70,7 +70,7 @@ public class PickContactScreen extends BaseActivity implements ContactSelectedLi
                 return true;
             case 1001:
                 String shareBody = "Hey guys! Come and join my team on Social Evening. Its a fantastic" +
-                        " app which allow you to take challenges. Download it on  ";
+                        " app which allow you to take challenges. Download it here https://www.dropbox.com/s/zv9urucwrloxz3e/app-debug.apk?dl=0";
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friends");

@@ -34,7 +34,7 @@ public class PushNotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         PushDto pushDto = (PushDto) JsonUtils.convertJsonStringToObject(intent.getExtras().getString("com.parse.Data"), PushDto.class);
         if (pushDto.getPushType() == Constants.PushType.FRIEND_INVITED_TO_TEAM) {
-            showNotification(context, "Invitation Received", pushDto.getMessage(), false);
+            showNotification(context, "Invitation Received", pushDto.getMessage(), true);
         } else if (pushDto.getPushType() == Constants.PushType.FRIEND_ACCEPTED_INVITATION) {
             showNotification(context, "Invitation Accepted", pushDto.getMessage(), false);
         } else if (pushDto.getPushType() == Constants.PushType.FRIEND_DECLINED_INVITATION) {
@@ -68,12 +68,12 @@ public class PushNotificationReceiver extends BroadcastReceiver {
             Intent yesReceive = new Intent(context, ActionBroadcast.class);
             yesReceive.setAction("yes");
             PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-            notification.addAction(R.drawable.ic_done_black, "Yes", pendingIntentYes);
+            notification.addAction(R.drawable.ic_done_black, "Accept", pendingIntentYes);
 
             Intent maybeReceive = new Intent(context, ActionBroadcast.class);
             maybeReceive.setAction("maybe");
             PendingIntent pendingIntentMaybe = PendingIntent.getBroadcast(context, 12345, maybeReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-            notification.addAction(R.drawable.ic_clear_black, "Partly", pendingIntentMaybe);
+            notification.addAction(R.drawable.ic_clear_black, "Decline", pendingIntentMaybe);
 
         }
         notificationManager.notify(123, notification.build());

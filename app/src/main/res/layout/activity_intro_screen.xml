@@ -6,9 +6,11 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="@string/splash_intro_text"
+        android:text="Bored in the evening? \n\n Wanna party and make it interesting? \n\n Join social evening, where you can challenge team with your friends in bars near you"
+        android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
+        android:padding="16dp"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:layout_height="wrap_content" />

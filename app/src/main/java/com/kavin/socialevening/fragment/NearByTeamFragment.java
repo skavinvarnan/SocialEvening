@@ -78,6 +78,8 @@ public class NearByTeamFragment extends Fragment {
         mList.setVisibility(View.GONE);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.Parse.Team.TEAM);
+        query.whereNotEqualTo(Constants.Parse.Team.JOINED_FRIENDS, ParseUser.getCurrentUser().getEmail());
+        query.whereNotEqualTo(Constants.Parse.Team.FRIENDS_LIST, ParseUser.getCurrentUser().getEmail());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -92,7 +94,12 @@ public class NearByTeamFragment extends Fragment {
             }
         });
 
-
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mNearByAdapter.gotClickedOn(position);
+            }
+        });
         mList.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener() {
             @SuppressWarnings("rawtypes")
             public boolean onItemLongClick(AdapterView parent, View view, final int position, long id) {
@@ -137,7 +144,7 @@ public class NearByTeamFragment extends Fragment {
                             }
                         });
                 alertDialog.show();
-                return false;
+                return true;
             }
         });
     }

@@ -45,7 +45,7 @@ public class PushNotificationReceiver extends BroadcastReceiver {
             } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_DECLINED) {
                 showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
             } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_CREATED) {
-                showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
+                showNotification(context, "Challenge Created", pushDto.getMessage(), false);
             }
         } catch (Exception e) {
             showNotification(context, "Testing", "Test notification", false);

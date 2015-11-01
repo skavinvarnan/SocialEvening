@@ -17,14 +17,18 @@ import android.widget.Toast;
 import com.kavin.socialevening.R;
 import com.kavin.socialevening.adapter.ChallengeAdapter;
 import com.kavin.socialevening.adapter.MyTeamAdapter;
+import com.kavin.socialevening.server.dto.PushDto;
 import com.kavin.socialevening.utils.Constants;
+import com.kavin.socialevening.utils.JsonUtils;
 import com.kavin.socialevening.views.RoundedImageView;
 import com.parse.FunctionCallback;
 import com.parse.GetCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -157,6 +161,24 @@ public class ChallengeScreen extends BaseActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     mProgressDialog.dismiss();
+
+                    List<String> challengeFromFriends = (List<String>) mTeamObject
+                            .get(Constants.Parse.Team.JOINED_FRIENDS);
+
+                    ParseQuery pushQuery = ParseInstallation.getQuery();
+                    pushQuery.whereContainedIn(Constants.Parse.User.EMAIL, challengeFromFriends);
+
+                    ParsePush push = new ParsePush();
+                    push.setQuery(pushQuery);
+                    PushDto pushDto = new PushDto();
+                    pushDto.setPushType(Constants.PushType.CHALLENGE_CREATED);
+                    if (ParseUser.getCurrentUser().get(Constants.Parse.User.FB_NAME) != null) {
+                        pushDto.setMessage(mMyTeams.get(mSpinner.getSelectedItemPosition()).getString(Constants.Parse.Team.NAME) + " has " +
+                                " challenged your team");
+                    }
+                    push.setData(JsonUtils.convertObjectToJSONObject(pushDto));
+                    push.sendInBackground();
+
                     Toast.makeText(getApplicationContext(), "Challenge sent :)", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {

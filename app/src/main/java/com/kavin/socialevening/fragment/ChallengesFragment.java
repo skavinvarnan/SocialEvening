@@ -123,5 +123,10 @@ public class ChallengesFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        loadChallenges();
+        super.onResume();
+    }
 
 }

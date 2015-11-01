@@ -32,20 +32,25 @@ public class PushNotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        PushDto pushDto = (PushDto) JsonUtils.convertJsonStringToObject(intent.getExtras().getString("com.parse.Data"), PushDto.class);
-        if (pushDto.getPushType() == Constants.PushType.FRIEND_INVITED_TO_TEAM) {
-            showNotification(context, "Invitation Received", pushDto.getMessage(), true);
-        } else if (pushDto.getPushType() == Constants.PushType.FRIEND_ACCEPTED_INVITATION) {
-            showNotification(context, "Invitation Accepted", pushDto.getMessage(), false);
-        } else if (pushDto.getPushType() == Constants.PushType.FRIEND_DECLINED_INVITATION) {
-            showNotification(context, "Invitation Declined", pushDto.getMessage(), false);
-        } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_ACCEPTED) {
-            showNotification(context, "Challenge Accepted", pushDto.getMessage(), false);
-        } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_DECLINED) {
-            showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
-        } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_CREATED) {
-            showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
+        try {
+            PushDto pushDto = (PushDto) JsonUtils.convertJsonStringToObject(intent.getExtras().getString("com.parse.Data"), PushDto.class);
+            if (pushDto.getPushType() == Constants.PushType.FRIEND_INVITED_TO_TEAM) {
+                showNotification(context, "Invitation Received", pushDto.getMessage(), true);
+            } else if (pushDto.getPushType() == Constants.PushType.FRIEND_ACCEPTED_INVITATION) {
+                showNotification(context, "Invitation Accepted", pushDto.getMessage(), false);
+            } else if (pushDto.getPushType() == Constants.PushType.FRIEND_DECLINED_INVITATION) {
+                showNotification(context, "Invitation Declined", pushDto.getMessage(), false);
+            } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_ACCEPTED) {
+                showNotification(context, "Challenge Accepted", pushDto.getMessage(), false);
+            } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_DECLINED) {
+                showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
+            } else if (pushDto.getPushType() == Constants.PushType.CHALLENGE_CREATED) {
+                showNotification(context, "Challenge Declined", pushDto.getMessage(), false);
+            }
+        } catch (Exception e) {
+            showNotification(context, "Testing", "Test notification", false);
         }
+
 
     }
 

@@ -17,7 +17,7 @@ import com.kavin.socialevening.fragment.RewardFragment;
  */
 public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] {"My Teams", "Near by", "Challenges", "Reward"};
+    private String tabTitles[] = new String[]{"My Teams", "Near by", "Challenges", "Reward"};
     private Context mContext;
 
     private MyTeamsFragment mMyTeamsFragment;
@@ -67,5 +67,24 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabTitles[position];
+    }
+
+    public void selectedPage(int position) {
+        switch (position) {
+            case 0:
+                mMyTeamsFragment.onResume();
+                break;
+            case 1:
+                mNearByTeamFragment.onResume();
+                break;
+            case 2:
+                mChallengesFragment.onResume();
+                break;
+            case 3:
+                mRewardFragment.onResume();
+                break;
+            default:
+                return;
+        }
     }
 }

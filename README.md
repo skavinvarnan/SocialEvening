@@ -2,7 +2,7 @@
 
 An demo application created by me for interview purpose. I created this application incredibly fast and completed within 4 days (48 Total working hours).
 
-The concept of this application is so simple and very good. It would be better explained by an video.
+The concept of this application is so simple and very good. It would be better explained by a video.
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/LcMQMrWx0YI/0.jpg)](http://www.youtube.com/watch?v=LcMQMrWx0YI)
 
